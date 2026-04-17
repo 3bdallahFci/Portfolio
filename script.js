@@ -3,6 +3,10 @@ const modeToggle = document.getElementById('modeToggle');
 const body = document.body;
 const icon = modeToggle.querySelector('i');
 
+if (localStorage.getItem('darkMode') === 'enabled') {
+    body.classList.add('dark-mode');
+    icon.classList.replace('fa-moon', 'fa-sun');
+}
 
 modeToggle.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
@@ -73,6 +77,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Active nav link on scroll
+document.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section[id]');
+
+    const setActiveNav = () => {
+        const scrollPosition = window.scrollY + 140;
+
+        sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+
+            if (
+                scrollPosition >= sectionTop &&
+                scrollPosition < sectionTop + sectionHeight
+            ) {
+                navLinks.forEach((link) => link.classList.remove('active'));
+                const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
+        });
+    };
+
+    window.addEventListener('scroll', setActiveNav);
+    setActiveNav();
+});
+
 // Simple Learning Goals
 document.addEventListener('DOMContentLoaded', () => {
     const progressBtn = document.getElementById('progressBtn');
@@ -98,28 +132,30 @@ document.addEventListener('DOMContentLoaded', () => {
         goalInput.value = savedGoal;
     }
     
-    progressBtn.addEventListener('click',()=>
-    {
-        const inputValue = parseInt(progressInput.value)
-        if(!isNaN(inputValue) && inputValue >= 0 && inputValue <= 100)
-        {
-            progress = inputValue
+    progressBtn.addEventListener('click', () => {
+        const inputValue = parseInt(progressInput.value, 10);
+        if (!isNaN(inputValue) && inputValue >= 0 && inputValue <= 100) {
+            progress = inputValue;
             progressBar.style.width = `${progress}%`;
             progressBtn.textContent = `Update Progress (${progress}%)`;
             localStorage.setItem('goalProgress', progress);
+        } else {
+            alert('Please enter a valid progress value between 0 and 100.');
         }
-    })
+    });
 
     // Clear progress when clear button is clicked
-    clearBtn.addEventListener('click', () => {
-        progress = 0;
-        progressBar.style.width = '0%';
-        progressBtn.textContent = 'Update Progress (0%)';
-        goalInput.value = '';
-        progressInput.value = '';
-        localStorage.removeItem('goalProgress');
-        localStorage.removeItem('goalText');
-    });
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            progress = 0;
+            progressBar.style.width = '0%';
+            progressBtn.textContent = 'Update Progress (0%)';
+            goalInput.value = '';
+            progressInput.value = '';
+            localStorage.removeItem('goalProgress');
+            localStorage.removeItem('goalText');
+        });
+    }
     
     // Save goal text when it changes
     goalInput.addEventListener('input', () => {

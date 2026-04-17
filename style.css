@@ -36,6 +36,8 @@ header
     justify-content: space-between;
     align-items: center;
     padding: 20px 100px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
 }
 header .logo
 {
@@ -54,6 +56,12 @@ nav a
 nav a:hover
 {
     color: gold;
+}
+
+.nav-link.active {
+    color: gold;
+    border-bottom: 2px solid gold;
+    padding-bottom: 4px;
 }
 section
 {
@@ -116,6 +124,22 @@ section
     background-color: darkgoldenrod;
     transform: scale(1.1);
 }
+
+.secondary-btn {
+    display: inline-block;
+    padding: 0.7em 1.3em;
+    background: #fff;
+    color: #333;
+    border: 2px solid gold;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.secondary-btn:hover {
+    background: gold;
+    color: #fff;
+}
 .social-icons a
 {
     margin-right: 30px;
@@ -137,6 +161,7 @@ section
     display: flex;
     justify-content: center;
     width: 100%;
+    flex-wrap: wrap;
 }
 .card
 {
@@ -458,6 +483,12 @@ footer
 .dark-mode .mode-toggle {
     background-color: #333;
     color: gold;
+}
+
+.dark-mode .secondary-btn {
+    background: #1f1f1f;
+    color: #e0e0e0;
+    border-color: gold;
 }
 
 .card-filter-container {
